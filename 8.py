@@ -13,15 +13,18 @@ def parse(puzzle_input):
     file = open(f'{puzzle_input}.txt',mode='r')
 
     # List of strings/2d Array of characters
-    # inp = file.read().split("\n")
+    inp = file.read().splitlines()
     # Remove blank lines
     # inp = [i for i in inp if i != ""]
 
     # Convert each line to an integer
-    # inp = [int(line) for line in file.read().split()]
+    # inp = [int(line) for line in file.read().splitlines()]
 
     # 2D Array of numbers
-    # inp = [list(map(int, line.split())) for line in file.read().split("\n")]
+    # inp = [list(map(int, line.split())) for line in file.read().splitlines()]
+
+    # Rotate 2D Array
+    # inp = [list(elem) for elem in zip(*inp[::-1])]
 
     # Dictionary of string pairs a b
     # inp = {a:b for a, b in input().split()}
@@ -61,7 +64,7 @@ def part2(inp):
     return -1
 
 if __name__ == "__main__":
-    inp = parse(1)
+    inp = parse()
     print(inp)
     print("SO1____________")
     a = part1(inp)
