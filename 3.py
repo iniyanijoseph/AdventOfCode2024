@@ -5,6 +5,7 @@ import pathlib
 import sys
 from collections import defaultdict
 import parse
+import re
 
 sys.setrecursionlimit(10000)
 
@@ -13,7 +14,7 @@ def parse(puzzle_input):
     file = open(f'{puzzle_input}.txt',mode='r')
 
     # List of strings/2d Array of characters
-    inp = file.read().splitlines()
+    inp = file.read()
     # Remove blank lines
     # inp = [i for i in inp if i != ""]
 
@@ -50,6 +51,7 @@ def parse(puzzle_input):
     pattern = parse.compile("{a} text {b} text {c} text.")
     [pattern.search(i).named for i in file.read().split("\n") if i != ""]
     """
+    #inp=inp.replace(")mul", ") mul").replace("(mul", "mul")
 
     file.close()
 
@@ -57,14 +59,39 @@ def parse(puzzle_input):
 
 def part1(inp):
     """Solve part 1."""
-    return -1
+    inp = re.findall(r"mul\(\d*,\d*\)", inp)
+    s = 0
+    for i in inp:
+        a, b = i.split(",")
+        b = int(b[:-1])
+        a = int(a[4:])
+        print(a, b)
+        s += a*b
+    return s
 
 def part2(inp):
     """Solve part 2."""
-    return -1
+    inp = [i.group() for i in re.finditer(r"(don\'t\(\))|(mul\(\d*,\d*\))|(do\(\))", inp)]
+    print(inp)
+    s = 0
+    ignore = False
+    for i in inp:
+        if(i == "do()"):
+            ignore = False
+        elif(i == "don't()"):
+            ignore = True
+        elif not ignore:
+            a, b = i.split(",")
+            b = int(b[:-1])
+            a = int(a[4:])
+            print(a, b)
+            s += a*b
+
+    return s
+
 
 if __name__ == "__main__":
-    inp = parse()
+    inp = parse(3)
     print(inp)
     print("SO1____________")
     a = part1(inp)
