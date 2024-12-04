@@ -5,6 +5,8 @@ import pathlib
 import sys
 from collections import defaultdict
 import parse
+import re
+from functools import reduce
 
 sys.setrecursionlimit(10000)
 
@@ -21,7 +23,7 @@ def parse(puzzle_input):
     # inp = [int(line) for line in file.read().splitlines()]
 
     # 2D Array of numbers
-    # inp = [list(map(int, line.split())) for line in file.read().splitlines()]
+    # inp = [line.split() for line in file.read().splitlines()]
 
     # Rotate 2D Array
     # inp = [list(elem) for elem in zip(*inp[::-1])]
@@ -57,14 +59,49 @@ def parse(puzzle_input):
 
 def part1(inp):
     """Solve part 1."""
-    return -1
+    horz = sum([len(re.findall(r"XMAS", i)) for i in inp])
+    horz += sum([len(re.findall(r"SAMX", i)) for i in inp])
+    inp = [reduce(lambda x,y :x+y, elem) for elem in zip(*inp[::-1])]
+    vert = sum([len(re.findall(r"XMAS", i)) for i in inp])
+    vert += sum([len(re.findall(r"SAMX", i)) for i in inp])
+
+    inp = [reduce(lambda x,y :x+y, elem) for elem in zip(*inp[::-1])]
+    inp = [reduce(lambda x,y :x+y, elem) for elem in zip(*inp[::-1])]
+
+    leftdiag = [e*" " + i + (len(inp)-e-1)*" " for e, i in enumerate(inp)]
+    leftdiag = [reduce(lambda x,y :x+y, elem) for elem in zip(*leftdiag[::-1])]
+
+    ld = sum([len(re.findall(r"XMAS", i)) for i in leftdiag])
+    ld += sum([len(re.findall(r"SAMX", i)) for i in leftdiag])
+
+    rightdiag = [(len(inp)-e-1)*" " + i + " "*e for e, i in enumerate(inp)]
+    rightdiag = [reduce(lambda x,y :x+y, elem) for elem in zip(*rightdiag[::-1])]
+
+    rd = sum([len(re.findall(r"XMAS", i)) for i in rightdiag])
+    rd += sum([len(re.findall(r"SAMX", i)) for i in rightdiag])
+
+    print(horz, vert, ld, rd)
+
+    return horz + vert + ld + rd
 
 def part2(inp):
     """Solve part 2."""
-    return -1
+    s  = 0
+    for i in range(len(inp)-2):
+        for j in range(len(inp[i])-2):
+            if(inp[i][j] == "M" and inp[i][j+2] == "S" and inp[i+1][j+1] == "A" and inp[i+2][j] == "M" and inp[i+2][j+2] == "S"):
+                s += 1
+            elif(inp[i][j] == "M" and inp[i][j+2] == "M" and inp[i+1][j+1] == "A" and inp[i+2][j] == "S" and inp[i+2][j+2] == "S"):
+                s += 1
+            elif(inp[i][j] == "S" and inp[i][j+2] == "S" and inp[i+1][j+1] == "A" and inp[i+2][j] == "M" and inp[i+2][j+2] == "M"):
+                s += 1
+            elif(inp[i][j] == "S" and inp[i][j+2] == "M" and inp[i+1][j+1] == "A" and inp[i+2][j] == "S" and inp[i+2][j+2] == "M"):
+                s += 1
+
+    return s
 
 if __name__ == "__main__":
-    inp = parse()
+    inp = parse(4)
     print(inp)
     print("SO1____________")
     a = part1(inp)
