@@ -5,6 +5,9 @@ import pathlib
 import sys
 from collections import defaultdict
 import parse
+from tqdm import tqdm
+import pyperclip
+import math
 
 sys.setrecursionlimit(10000)
 
@@ -51,28 +54,61 @@ def parse(puzzle_input):
     [pattern.search(i).named for i in file.read().split("\n") if i != ""]
     """
 
+    inp = [(int(i.split(":")[0]), list(map(int, (i.split(":")[1]).split()))) for i in inp]
+
     file.close()
 
     return inp
 
+def pm(li, i, s, t):
+    if len(li) == i:
+        return s == t
+
+    return pm(li, i+1, s + li[i], t) + pm(li, i+1, s * li[i], t)
+
 def part1(inp):
     """Solve part 1."""
-    return -1
+    s = 0
+    for k in inp:
+        if pm(k[1], 1, k[1][0], k[0]):
+            s += k[0]
+    return s
+
+def numcat(a,b):
+    x = int(math.pow(10,(int(math.log(b,10)) + 1)) * a + b)
+    y = int(f"{a}{b}")
+    z = int(str(a) + str(b))
+
+    if x==y==z:
+        return x
+    else:
+        print(a, "+", b, x, y, z)
+
+def pmc(li, i, s, t):
+    if len(li) == i:
+        return s == t
+
+    return pmc(li, i+1, s + li[i], t) + pmc(li, i+1, s * li[i], t) + pmc(li, i+1, numcat(s, li[i]), t)
 
 def part2(inp):
     """Solve part 2."""
-    return -1
+    s = 0
+    for k in tqdm(inp):
+        if pmc(k[1], 1, k[1][0], k[0]):
+            s += k[0]
+    return s
 
 if __name__ == "__main__":
-    inp = parse()
-    print(inp)
+    inp = parse(7)
+    # print(inp)
     print("SO1____________")
     a = part1(inp)
     print(a)
     print("EO1____________")
     print("SO2")
-    a = part2(inp)
-    print(a)
+    b = part2(inp)
+    print(b)
+    pyperclip.copy(str(a) if b != -1 else str(b))
     print("EO2____________")
 
 
