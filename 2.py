@@ -67,7 +67,6 @@ def part1(inp):
     for li in inp:
         t = [li[i]-li[i-1] for i in range(1, len(li))]
         s += 1 if (all([i == -1 or i == -2 or i == -3 for i in t]) or all([i == 1 or i == 2 or i == 3 for i in t])) else 0
-        # print(t if (all([i == -1 or i == -2 or i == -3 for i in t]) or all([i == 1 or i == 2 or i == 3 for i in t])) else 0)
 
     return s
 

@@ -1,10 +1,8 @@
 # aoc 2024 1.py
 
-from os import pread
-import pathlib
 import sys
 from collections import defaultdict
-import parse
+# import parse
 
 sys.setrecursionlimit(10000)
 
@@ -85,7 +83,7 @@ def part2(inp):
 
 if __name__ == "__main__":
     inp = parse(1)
-    print(inp)
+    # print(inp)
     print("SO1____________")
     a = part1(inp)
     print(a)

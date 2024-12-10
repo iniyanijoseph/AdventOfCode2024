@@ -18,7 +18,7 @@ for i in 0..<len(inp):
       freqs[inp[i][j]].incl(a)
       occupied.incl(a)
 
-var locs : HashSet[Vector[int]] = initHashSet[Vector[int]]()
+var locs = initHashSet[Vector[int]]()
 
 for i in freqs.keys:
   for x in freqs[i]:
@@ -37,8 +37,7 @@ for i in freqs.keys:
         locs.incl(y - dif)
       ]#
 
-      # Part 2
-      for j in -1000..1000:
+      for j in -100..100:
         if not (x + dif == y):
           locs.incl(x + dif*j)
 
